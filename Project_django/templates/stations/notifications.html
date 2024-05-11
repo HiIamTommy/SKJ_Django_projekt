@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notifications</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    {% load static %}
+    <style>
+        .card {
+            margin-bottom: 20px;
+            border: solid;
+            border-radius: 15px;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Notifications</h1>
+        <a href="{% url 'delete_all_notifications' user.id %}" class="btn btn-danger">Delete All</a>
+        {% for notification in notifications %}
+            <div class="card">
+                {% if notification.notification_type == 'new_comment' %}
+                    <h2>New Comment from {{ notification.sender }}</h2>
+                    <p>{{ notification.comment.body }}</p>
+                {% elif notification.notification_type == 'new_post' %}
+                    <h2>{{ notification.sender }} has a new post: {{ notification.post.title }}</h2>
+                {% elif notification.notification_type == 'new_follower' %}
+                    <h2>{{ notification.sender }} is now following you</h2>
+                {% endif %}
+                <a href="{% url 'delete_notification' notification.id %}"><img src="{% static 'remove.png' %}" alt="Delete icon" style="width: 50px; height: 50px"></a>
+            </div>
+        {% empty %}
+            <p>No notifications.</p>
+        {% endfor %}
+        <a href="{% url 'login_with_id' user.id %}" class="btn btn-secondary">Back to dashboard</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Detail</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    {% load static %}
+    <style>
+        .profile-card {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            width: 200px;
+            height: auto;
+            border: 1px solid #000;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .profile-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 50%;
+        }
+        .posts-container {
+            margin-left: 220px;
+        }
+        body {
+            background-color: gray;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-card">
+            <a href="{% url 'login_with_id' user.id %}" class="btn btn-secondary back-button">Back to dashboard</a>
+            <img src="{% static detailed_user.username %}.jpg" alt="Profile Picture">
+            <h2>{{ detailed_user.username }}</h2>
+        </div>
+        <div class="posts-container">
+            {% for post in posts %}
+                <div class="card">
+                    <h2>{{ post.title }}</h2>
+                    <p>{{ post.body }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

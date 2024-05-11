@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    {% load static %}
+    <style>
+        .centered-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .back-button {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+        }
+        body{
+            margin: 5vh;
+            background-color: gray;
+        }
+    </style>
+</head>
+<body>
+    <a href="{% url 'login_with_id' user.id %}" class="btn btn-primary back-button">Back to dashboard</a>
+    <div class="container">
+        {% for following in following_users %}
+            <div class="card">
+                <div class="row centered-row">
+                    <div class="col-auto">
+                        <img src="{% static following.followed_user.username %}.jpg" alt="Profile Picture" style="width: 150px; height: 150px; border-radius: 50%">
+                    </div>
+                    <div class="col-auto">
+                        <h5 class="card-title" style="font-size: 4em">{{ following.followed_user.username }}</h5>
+                    </div>
+                    <div class="col-auto">
+                        <a href="{% url 'unfollow_user' user.id following.followed_user.id %}">
+                            <img src="{% static 'unfollow.png' %}" alt="Unfollow icon" style="width: 150px; height: 150px;">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

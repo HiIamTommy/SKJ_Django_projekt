@@ -1,0 +1,55 @@
+<html>
+<head>
+    <title>Social app for sportsmen</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <script>
+        function toggleForm() {
+            var loginForm = document.getElementById('login_form');
+            var registerForm = document.getElementById('register_form');
+            var loginRadio = document.getElementById('login_radio');
+            if (loginRadio.checked) {
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+            } else {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Login or Register</h5>
+                <div style="display: flex; justify-content: center; gap: 25px">
+                    <input type="radio" id="login_radio" name="formToggle" onclick="toggleForm()" checked> Login<br>
+                    <input type="radio" id="register_radio" name="formToggle" onclick="toggleForm()"> Register<br>
+                </div>
+
+                {% if error %}
+                    <div class="alert alert-danget" role="alert">
+                        {{ error }}
+                    </div>
+                {% endif %}
+
+                <form id="login_form" action="{% url 'login' %}" method="POST"> {% csrf_token %}
+                    {{ login_form.as_p }}
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+
+                <form id="register_form" action="{% url 'register' %}" method="POST" style="display: none">
+                    {% csrf_token %}
+                    {{ register_form.as_p }}
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+</html>

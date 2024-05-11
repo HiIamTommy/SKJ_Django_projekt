@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    {% load static %}
+</head>
+{#TODO DODELAT STYLIZACI, PRIDANI EVENTU,#}
+<body>
+    <a href="{% url 'login_with_id' user.id %}" class="btn btn-secondary">Back to dashboard</a>
+    <div class="container">
+        
+        {% for event in events %}
+            <div class="event">
+                <h2>{{ event.title }}</h2>
+                <p>{{ event.description }}</p>
+                <p>{{ event.date }}</p>
+                <p>{{ event.location }}</p>
+                <p>{{ event.price }}</p>
+                <p>{{ event.capacity }}</p>
+                <p>{{ event.created_at }}</p>
+                <p>{{ event.updated_at }}</p>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
