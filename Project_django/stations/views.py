@@ -11,7 +11,7 @@ import random
 from django.urls import reverse
 
 from .forms import LoginForm, RegisterForm, CommentForm, UpdateUserForm, AddPostForm, AddSportEventForm, \
-    AddSportCategoryForm
+    AddSportCategoryForm, UpdateSportEventForm
 from .models import AppUser, Post, Comment, Following, Notification, SportEvent
 
 
@@ -288,3 +288,18 @@ def user_events(request, detailed_id, user_id):
     detailed_user = AppUser.objects.get(id=detailed_id)
     events = SportEvent.objects.filter(user=detailed_user)
     return render(request, 'stations/user_events.html', {'events': events, 'logged_user': logged_user, 'detailed_user': detailed_user})
+
+
+def update_sport_event(request, user_id, event_id):
+    user = AppUser.objects.get(id=user_id)
+    event = get_object_or_404(SportEvent, id=event_id)
+    if request.method == 'POST':
+        form = UpdateSportEventForm(request.POST, instance=event)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Event updated successfully')
+            return redirect('sport_events', user_id=user_id)
+    else:
+        form = UpdateSportEventForm(instance=event)
+    return render(request, 'stations/update_sport_event.html', {'form': form, 'user': user})
+

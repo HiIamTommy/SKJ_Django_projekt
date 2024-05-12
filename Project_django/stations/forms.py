@@ -54,3 +54,13 @@ class AddSportCategoryForm(forms.ModelForm):
     class Meta:
         model = SportCategory
         fields = ['name']
+
+
+class UpdateSportEventForm(forms.ModelForm):
+    class Meta:
+        model = SportEvent
+        fields = ['title', 'description', 'date', 'category']
+        widgets = {
+            'date': forms.DateTimeInput(attrs={'type': 'datetime-local'})
+        }
+
