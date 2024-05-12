@@ -33,10 +33,12 @@
     <a href="{% url 'login_with_id' user.id %}" class="btn btn-primary back-button">Back to dashboard</a>
     <div class="container">
         {% for following in following_users %}
-            <div class="card">
+            <div class="card" style="width: 80vh">
                 <div class="row centered-row">
                     <div class="col-auto">
-                        <img src="{% static following.followed_user.username %}.jpg" alt="Profile Picture" style="width: 150px; height: 150px; border-radius: 50%">
+                        <a href="{% url 'user_detail' user.id following.followed_user.id %}">
+                            <img src="{% static following.followed_user.username %}.jpg" alt="Profile Picture" style="width: 150px; height: 150px; border-radius: 50%">
+                        </a>
                     </div>
                     <div class="col-auto">
                         <h5 class="card-title" style="font-size: 4em">{{ following.followed_user.username }}</h5>

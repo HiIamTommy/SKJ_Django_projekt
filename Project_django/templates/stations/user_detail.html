@@ -40,6 +40,7 @@
     <div class="container">
         <div class="profile-card">
             <a href="{% url 'login_with_id' user.id %}" class="btn btn-secondary back-button">Back to dashboard</a>
+            <a href="{% url 'user_events' detailed_user.id user.id%}" class="btn btn-primary">View Created Events</a> <!-- New button -->
             <img src="{% static detailed_user.username %}.jpg" alt="Profile Picture">
             <h2>{{ detailed_user.username }}</h2>
         </div>

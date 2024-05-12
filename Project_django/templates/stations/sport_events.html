@@ -8,11 +8,19 @@
     {% bootstrap_javascript %}
     {% load static %}
 </head>
-{#TODO DODELAT STYLIZACI, PRIDANI EVENTU,#}
 <body>
-    <a href="{% url 'login_with_id' user.id %}" class="btn btn-secondary">Back to dashboard</a>
     <div class="container">
-        
+        <div class="row">
+            <a href="{% url 'login_with_id' user.id %}" class="btn btn-secondary">Back to dashboard</a>
+        </div>
+        <div class="row">
+            <a href="{% url 'add_sport_event' user.id %}" class="btn btn-primary">Add new event</a>
+        </div>
+        <div class="row">
+            <a href="{% url 'add_sport_category' user.id %}" class="btn btn-primary">Add new category</a>
+        </div>
+    </div>
+    <div class="container">
         {% for event in events %}
             <div class="event">
                 <h2>{{ event.title }}</h2>
@@ -21,8 +29,12 @@
                 <p>{{ event.location }}</p>
                 <p>{{ event.price }}</p>
                 <p>{{ event.capacity }}</p>
-                <p>{{ event.created_at }}</p>
-                <p>{{ event.updated_at }}</p>
+                <p>Vytvoril: {{ event.user }}</p>
+                {% if user.id == event.user.id %}
+                    <a href="{% url 'delete_sport_event' user.id event.id %}">
+                        <img style="width: 50px; height: 50px" src="{% static 'remove.png' %}" alt="Delete icon">
+                    </a>
+                {% endif %}
             </div>
         {% endfor %}
     </div>

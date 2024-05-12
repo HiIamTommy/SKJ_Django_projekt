@@ -1,5 +1,5 @@
 from django import forms
-from .models import AppUser, Comment, Post
+from .models import AppUser, Comment, Post, SportEvent, SportCategory
 
 
 class LoginForm(forms.ModelForm):
@@ -39,3 +39,18 @@ class AddPostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'body']
+
+
+class AddSportEventForm(forms.ModelForm):
+    class Meta:
+        model = SportEvent
+        fields = ['title', 'description', 'date', 'category']
+        widgets = {
+            'date': forms.DateTimeInput(attrs={'type': 'datetime-local'})
+        }
+
+
+class AddSportCategoryForm(forms.ModelForm):
+    class Meta:
+        model = SportCategory
+        fields = ['name']

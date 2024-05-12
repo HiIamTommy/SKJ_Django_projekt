@@ -44,6 +44,7 @@ class Following(models.Model):
 
 class SportEvent(models.Model):
     title = models.CharField(max_length=50)
+    user = models.ForeignKey(AppUser, on_delete=models.CASCADE, default=None, null=True)
     description = models.TextField()
     date = models.DateTimeField()
     category = models.ForeignKey('SportCategory', on_delete=models.CASCADE)

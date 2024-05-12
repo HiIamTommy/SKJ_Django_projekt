@@ -10,7 +10,8 @@ import random
 
 from django.urls import reverse
 
-from .forms import LoginForm, RegisterForm, CommentForm, UpdateUserForm, AddPostForm
+from .forms import LoginForm, RegisterForm, CommentForm, UpdateUserForm, AddPostForm, AddSportEventForm, \
+    AddSportCategoryForm
 from .models import AppUser, Post, Comment, Following, Notification, SportEvent
 
 
@@ -245,3 +246,45 @@ def sport_events(request, user_id):
     user = AppUser.objects.get(id=user_id)
     events = SportEvent.objects.all()
     return render(request, 'stations/sport_events.html', {'events': events, 'user': user})
+
+
+def add_sport_event(request, user_id):
+    user = AppUser.objects.get(id=user_id)
+    if request.method == 'POST':
+        form = AddSportEventForm(request.POST)
+        if form.is_valid():
+            sport_event = form.save(commit=False)
+            sport_event.user = user
+            sport_event.save()
+            return redirect('sport_events', user_id=user_id)
+    else:
+        form = AddSportEventForm()
+    return render(request, 'stations/add_sport_event.html', {'form': form, 'user': user})
+
+
+def delete_sport_event(request, user_id, event_id):
+    user = AppUser.objects.get(id=user_id)
+    event = SportEvent.objects.get(id=event_id)
+    if user == event.user:
+        event.delete()
+    return redirect('sport_events', user_id=user_id)
+
+
+def add_sport_category(request, user_id):
+    user = AppUser.objects.get(id=user_id)
+    if request.method == 'POST':
+        form = AddSportCategoryForm(request.POST)
+        if form.is_valid():
+            sport_category = form.save(commit=False)
+            sport_category.save()
+            return redirect('sport_events', user_id=user_id)
+    else:
+        form = AddSportCategoryForm()  # Use AddSportCategoryForm here
+    return render(request, 'stations/add_sport_category.html', {'form': form, 'user': user})
+
+
+def user_events(request, detailed_id, user_id):
+    logged_user = AppUser.objects.get(id=user_id)
+    detailed_user = AppUser.objects.get(id=detailed_id)
+    events = SportEvent.objects.filter(user=detailed_user)
+    return render(request, 'stations/user_events.html', {'events': events, 'logged_user': logged_user, 'detailed_user': detailed_user})

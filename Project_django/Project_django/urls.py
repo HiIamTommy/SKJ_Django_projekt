@@ -38,4 +38,8 @@ urlpatterns = [
     path('unfollow_user/<int:user_id>/<int:followed_user_id>', views.unfollow_user, name='unfollow_user'),
     path('user_detail/<int:user_id>/<int:detailed_id>', views.user_detail, name='user_detail'),
     path('sport_events/<int:user_id>', views.sport_events, name='sport_events'),
+    path('add_sport_event/<int:user_id>', views.add_sport_event, name='add_sport_event'),
+    path('delete_sport_event/<int:user_id>/<int:event_id>', views.delete_sport_event, name='delete_sport_event'),
+    path('add_sport_category/<int:user_id>', views.add_sport_category, name='add_sport_category'),
+    path('user_events/<int:detailed_id>/<int:user_id>', views.user_events, name='user_events'),
 ]

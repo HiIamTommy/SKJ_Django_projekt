@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Events</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    {% load static %}
+    <style>
+        .card {
+            margin-bottom: 20px;
+            border: solid;
+            border-radius: 15px;
+            padding: 15px;
+        }
+        .back-button {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <a href="{% url 'login_with_id' logged_user.id %}" class="btn btn-primary back-button">Back to dashboard</a>
+    
+    <div class="container">
+        {% for event in events %}
+            <div class="card">
+                <h2>{{ event.title }}</h2>
+                <p>{{ event.description }}</p>
+                <p>{{ event.date }}</p>
+                <p>Category: {{ event.category.name }}</p>
+            </div>
+        {% empty %}
+            <p>No events.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>
