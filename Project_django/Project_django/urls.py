@@ -43,4 +43,5 @@ urlpatterns = [
     path('add_sport_category/<int:user_id>', views.add_sport_category, name='add_sport_category'),
     path('user_events/<int:detailed_id>/<int:user_id>', views.user_events, name='user_events'),
     path('update_sport_event/<int:user_id>/<int:event_id>', views.update_sport_event, name='update_sport_event'),
+    path('search_users', views.search_users, name='search_users'),
 ]

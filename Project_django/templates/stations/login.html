@@ -22,8 +22,11 @@
         padding: 15px;
     }
     .content {
+        margin-top: 30px;
         width: 75%;
         padding: 15px;
+        height: 90vh;
+        overflow-y: auto;
     }
     .card {
         margin-bottom: 20px;
@@ -58,9 +61,59 @@
         border-radius: 20px;
         align-items: center;
     }
+    .search-bar {
+        position: absolute;
+        top: 0;
+        right: 0;
+        max-height: 400px;
+        z-index: 1000;
+    }
 </style>
+
 <body>
+<script>
+    window.onload = function() {
+    document.getElementById('user-search').addEventListener('input', function() {
+        let query = this.value;
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', '/search_users?query=' + query, true);
+        xhr.onload = function() {
+            if (this.status == 200) {
+                let users = JSON.parse(this.responseText);
+                let resultsDiv = document.getElementById('search-results');
+                let staticUrl = document.getElementById('static-url').getAttribute('data-url');
+                resultsDiv.innerHTML = '';
+                for (let i = 0; i < users.length; i++) {
+                    let button = document.createElement('button');
+                    button.style.fontSize = '20px';
+                    button.textContent = users[i].username;
+                    let img = document.createElement('img');
+                    img.src = staticUrl + users[i].username + '.jpg';
+                    img.style.border = 'solid';
+                    img.style.borderRadius = '50%';
+                    img.style.width = '50px';
+                    img.style.height = '50px';
+                    img.style.marginRight = '10px';
+                    button.appendChild(img);
+                    // Set the onclick event to redirect to the user_detail view
+                    button.onclick = function() {
+                        window.location.href = '/user_detail/' + {{ user.id }} + '/' + users[i].id;
+                    };
+                    resultsDiv.appendChild(button);
+                    resultsDiv.appendChild(document.createElement('br'));
+                }
+            }
+        };
+        xhr.send();
+    });
+};
+</script>
     <div class="dashboard">
+        <div id="static-url" data-url="{% static '' %}" style="display: none;"></div>
+        <div class="search-bar">
+            <input type="text" id="user-search" placeholder="Search users...">
+            <div id="search-results"></div>
+        </div>
         <div class="sidebar">
             <div class="card" style="display: flex; align-items: center; justify-content: space-between;">
                 <img src="{% static user.username %}.jpg" alt="Profile Picture" style="width: 80px; height: 80px; border-radius: 50%;">

@@ -43,6 +43,15 @@
             <a href="{% url 'user_events' detailed_user.id user.id%}" class="btn btn-primary">View Created Events</a> <!-- New button -->
             <img src="{% static detailed_user.username %}.jpg" alt="Profile Picture">
             <h2>{{ detailed_user.username }}</h2>
+            {% if is_following %}
+                <a href="{% url 'unfollow_user' user.id detailed_user.id %}">
+                    <img src="{% static 'unfollow.png' %}" alt="Unfollow" style="border-radius: 50%; border: solid; width: 50px; height: 50px;">
+                </a>
+            {% else %}
+                <a href="{% url 'follow_user' user.id detailed_user.id %}">
+                    <img src="{% static 'follow.png' %}" alt="Follow" style="border-radius: 50%; border: solid; width: 50px; height: 50px;">
+                </a>
+            {% endif %}
         </div>
         <div class="posts-container">
             {% for post in posts %}

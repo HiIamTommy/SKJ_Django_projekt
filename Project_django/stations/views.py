@@ -4,7 +4,8 @@ from django.core.files import File
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.core.files.temp import NamedTemporaryFile
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
+from django.db.models import Q
 import requests
 import random
 
@@ -239,7 +240,8 @@ def user_detail(request, user_id, detailed_id):
     user = AppUser.objects.get(id=user_id)
     detailed_user = AppUser.objects.get(id=detailed_id)
     posts = Post.objects.filter(user=detailed_user)
-    return render(request, 'stations/user_detail.html', {'detailed_user': detailed_user, 'posts': posts, 'user': user})
+    is_following = Following.objects.filter(user=user, followed_user=detailed_user).exists()
+    return render(request, 'stations/user_detail.html', {'detailed_user': detailed_user, 'posts': posts, 'user': user, 'is_following': is_following})
 
 
 def sport_events(request, user_id):
@@ -303,3 +305,9 @@ def update_sport_event(request, user_id, event_id):
         form = UpdateSportEventForm(instance=event)
     return render(request, 'stations/update_sport_event.html', {'form': form, 'user': user})
 
+
+def search_users(request):
+    query = request.GET.get('query', '')
+    users = AppUser.objects.filter(Q(username__icontains=query))[:5]
+    users_list = list(users.values('id', 'username'))
+    return JsonResponse(users_list, safe=False)
